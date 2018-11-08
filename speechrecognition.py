@@ -8,6 +8,7 @@
 # =============================
 
 from enum import Enum
+
 import speech_recognition as sr
 
 
@@ -31,6 +32,12 @@ class SpeechApp:
             print("Speak:")
             return self.r.listen(source)
 
+    def transcribe_from_file(self, filename):
+        """ transcribe from saved audio file """
+        with sr.AudioFile(filename) as source:
+            print(f"\nTranscribing from {filename} ...")
+            return self.r.record(source, duration=4)
+
     def recognizer(self, audio, api):
         """ recognizes with different APIs """
         if api == API.GOOGLE:
@@ -41,9 +48,15 @@ class SpeechApp:
     def main(self):
         """ prints out what the user says for now"""
         try:
+            # mic input
             audio = self.mic_input()
             recognized_audio = self.recognizer(audio, API.GOOGLE)
-            print(recognized_audio)
+            print("\t", recognized_audio)
+
+            # from file input
+            audio = self.transcribe_from_file('harvard.wav')
+            recognized_audio = self.recognizer(audio, API.GOOGLE)
+            print("\t", recognized_audio)
         except sr.UnknownValueError:
             print("Could not understand audio")
         except sr.RequestError as e:
