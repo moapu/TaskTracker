@@ -43,28 +43,25 @@ class SpeechAppetizer:
         except sr.RequestError as e:
             print("Could not request results; {0}".format(e))
 
-    def houndify_api(self):
-        with sr.Microphone() as source:
-            self.r.adjust_for_ambient_noise(source)
-            print("Speak:")
-            audio = self.r.listen(source)
-        try:
-            if self.r.recognize_houndify(audio) == "test":
-                print("You said " + self.r.recognize_houndify(audio))
-            elif self.r.recongize_houndify(audio) != "test":
-                print(self.r.recognize_houndify(audio))
+    def bing_api(self):
+         with sr.Microphone() as source:
+             self.r.adjust_for_ambient_noise(source)
+             print("Speak:")
+             audio = self.r.listen(source)
+         try:
+             if self.r.recognize_bing(audio) == "test":
+                 print("You said " + self.r.recognize_bing(audio))
+             elif self.r.recongize_bing(audio) != "test":
+                 print(self.r.recognize_bing(audio))
 
-        except sr.UnknownValueError:
-            print("Could not understand audio")
-        except sr.RequestError as e:
-            print("Could not request results; {0}".format(e))
-
+         except sr.UnknownValueError:
+             print("Could not understand audio")
+         except sr.RequestError as e:
+             print("Could not request results; {0}".format(e))
 
 if __name__ == "__main__":
     s = SpeechAppetizer()
     s.google_api()
-
-    s = SpeechAppetizer()
+    #s.bing_api()
     # s.google_api()
-    s.sphinx_api()
-    # s.houndify_api() needs to be paid for. This will not work for our application
+    #s.sphinx_api()
