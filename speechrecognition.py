@@ -38,6 +38,11 @@ class SpeechApp:
             print(f"\nTranscribing from {filename} ...")
             return self.r.record(source, duration=4)
 
+    def save_audio_to_file(self, audio):
+        """ saves audio to a file with '.wav' extension """
+        with open('audio/mic_input_1.wav', 'wb') as f:
+            f.write(audio.get_wav_data())
+
     def recognizer(self, audio, api):
         """ recognizes with different APIs """
         if api == API.GOOGLE:
@@ -57,6 +62,10 @@ class SpeechApp:
             audio = self.transcribe_from_file('harvard.wav')
             recognized_audio = self.recognizer(audio, API.GOOGLE)
             print("\t", recognized_audio)
+
+            # save audio to file
+            self.save_audio_to_file(audio)
+
         except sr.UnknownValueError:
             print("Could not understand audio")
         except sr.RequestError as e:
