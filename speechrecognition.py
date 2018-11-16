@@ -10,6 +10,7 @@
 from enum import Enum
 from saveToMongo import MongoDB
 import speech_recognition as sr
+import pyttsx3
 
 
 class API(Enum):
@@ -17,7 +18,6 @@ class API(Enum):
     GOOGLE = 1
     BING = 2
     SPHINX = 3
-
 
 class SpeechApp:
 
@@ -53,9 +53,16 @@ class SpeechApp:
     def save_to_mongo(self):
         pass
 
+    def say(self, text):
+        engine = pyttsx3.init();
+        engine.say(text)
+        engine.runAndWait()
+
     def main(self):
         """ prints out what the user says for now"""
         try:
+            self.say("Fuck you")
+            self.say("Hello World")
             # mic input
             audio = self.mic_input()
             recognized_audio = self.recognizer(audio, API.GOOGLE)
@@ -70,7 +77,7 @@ class SpeechApp:
             # self.save_audio_to_file(audio)
 
             # name the timer
-            timer_name = input("what do you want to name the this timer? ")
+            self.say("what do you want to name the this timer? ")
 
         except sr.UnknownValueError:
             print("Could not understand audio")
@@ -79,6 +86,7 @@ class SpeechApp:
 
 
 if __name__ == "__main__":
+
     mongodb = MongoDB()
     s = SpeechApp()
     s.main()
