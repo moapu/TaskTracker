@@ -8,7 +8,7 @@
 # =============================
 
 from enum import Enum
-
+from saveToMongo import MongoDB
 import speech_recognition as sr
 
 
@@ -50,6 +50,9 @@ class SpeechApp:
         elif api == API.SPHINX:
             return self.r.recognize_sphinx(audio)
 
+    def save_to_mongo(self):
+        pass
+
     def main(self):
         """ prints out what the user says for now"""
         try:
@@ -59,12 +62,15 @@ class SpeechApp:
             print("\t", recognized_audio)
 
             # from file input
-            audio = self.transcribe_from_file('harvard.wav')
-            recognized_audio = self.recognizer(audio, API.GOOGLE)
-            print("\t", recognized_audio)
+            # audio = self.transcribe_from_file('harvard.wav')
+            # recognized_audio = self.recognizer(audio, API.GOOGLE)
+            # print("\t", recognized_audio)
 
             # save audio to file
-            self.save_audio_to_file(audio)
+            # self.save_audio_to_file(audio)
+
+            # name the timer
+            timer_name = input("what do you want to name the this timer? ")
 
         except sr.UnknownValueError:
             print("Could not understand audio")
@@ -73,5 +79,6 @@ class SpeechApp:
 
 
 if __name__ == "__main__":
+    mongodb = MongoDB()
     s = SpeechApp()
     s.main()
