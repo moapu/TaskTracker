@@ -55,8 +55,6 @@ class SpeechApp:
 
     def say(self, text):
         engine = pyttsx3.init()
-        voices = engine.getProperty('voices')
-        engine.setProperty('voice', voices[7].id)
         engine.say(text)
         engine.runAndWait()
 
