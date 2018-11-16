@@ -55,13 +55,15 @@ class SpeechApp:
 
     def say(self, text):
         engine = pyttsx3.init()
+        #voices = engine.getProperty('voices')
+        #engine.setProperty('voice', voices[7].id)
         engine.say(text)
         engine.runAndWait()
 
     def main(self):
         """ prints out what the user says for now"""
         try:
-            self.say("Fuck you")
+
             self.say("Hello World")
             # mic input
             audio = self.mic_input()
