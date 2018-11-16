@@ -54,10 +54,11 @@ class SpeechApp:
         pass
 
     def say(self, text):
-        engine = pyttsx3.init();
+        engine = pyttsx3.init()
+        voices = engine.getProperty('voices')
+        engine.setProperty('voice', voices[7].id)
         engine.say(text)
         engine.runAndWait()
-
     def main(self):
         """ prints out what the user says for now"""
         try:
