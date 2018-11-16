@@ -11,9 +11,6 @@ import time
 
 class StopWatch:
 
-    def __init__(self):
-        time.strftime("%Y-%m-%d %I:%M:%S %p")
-
     def start(self):
         return time.time()
 

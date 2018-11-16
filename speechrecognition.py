@@ -19,6 +19,7 @@ class API(Enum):
     BING = 2
     SPHINX = 3
 
+
 class SpeechApp:
 
     def __init__(self):
@@ -27,24 +28,28 @@ class SpeechApp:
 
     def mic_input(self):
         """ return the microphone input """
+
         with sr.Microphone() as source:
             self.r.adjust_for_ambient_noise(source)
-            print("Speak:")
+            print("listening ...")
             return self.r.listen(source)
 
     def transcribe_from_file(self, filename):
         """ transcribe from saved audio file """
+
         with sr.AudioFile(filename) as source:
             print(f"\nTranscribing from {filename} ...")
             return self.r.record(source, duration=4)
 
     def save_audio_to_file(self, audio):
         """ saves audio to a file with '.wav' extension """
+
         with open('audio/mic_input_1.wav', 'wb') as f:
             f.write(audio.get_wav_data())
 
     def recognizer(self, audio, api):
         """ recognizes with different APIs """
+
         if api == API.GOOGLE:
             return self.r.recognize_google(audio)
         elif api == API.SPHINX:
@@ -55,13 +60,14 @@ class SpeechApp:
 
     def say(self, text):
         engine = pyttsx3.init()
-        #voices = engine.getProperty('voices')
-        #engine.setProperty('voice', voices[7].id)
+        voices = engine.getProperty('voices')
+        engine.setProperty('voice', voices[0].id)
+        rate = engine.getProperty('rate')
+        engine.setProperty('rate', rate-60)
         engine.say(text)
         engine.runAndWait()
 
     def main(self):
-        """ prints out what the user says for now"""
         try:
 
             self.say("Hello World")
