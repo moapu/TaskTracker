@@ -31,7 +31,7 @@ class SpeechApp:
 
         with sr.Microphone() as source:
             self.r.adjust_for_ambient_noise(source)
-            print("listening ...")
+            print("\t*** {} ***".format("LISTENING"))
             return self.r.listen(source)
 
     def transcribe_from_file(self, filename):

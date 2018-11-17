@@ -33,6 +33,36 @@ def question_iteration(iteration, recognized_audio):
             break
 
 
+def start_timer(recognized_audio):
+    """ starts the timer """
+    if "start a timer" in recognized_audio or "start timer" in recognized_audio:
+        if start_time != '':
+            return "TIMER ALREADY IN PROGRESS"
+        else:
+            return stopwatch.start()
+    else:
+        return ''
+
+
+def stop_timer(recognized_audio):
+    """  stops the timer """
+
+    if "stop timer" in recognized_audio:
+        return stopwatch.stop()
+    else:
+        return ''
+
+
+def calc_total_sec(start, stop):
+    """ calculate the sec for chore """
+
+    return "{:.0f}".format((stop - start))
+
+
+def prompt(title):
+    print("\t*** {} ***".format(title).upper())
+
+
 if __name__ == '__main__':
     """ MAIN FUNC """
 
@@ -45,18 +75,53 @@ if __name__ == '__main__':
     q_iterations = ["what", "what's", "what is"]
     x_iterations = ["close", "exit", "turn off"]
 
+    # === TIMER ===
+    start_time = ''
+    stop_time = ''
+    total_sec = ''
+
+    # === LAST COMMAND ===
+    last_command = ''
+
     # === START ===
     speech.say("What chore do you want to time? ")
     while True:
-        # audio input
-        audio = speech.mic_input()
-        recognized_audio = speech.recognizer(audio, API.GOOGLE)
-        print("\t", recognized_audio)
+        try:
+            audio = speech.mic_input()
+            recognized_audio = speech.recognizer(audio, API.GOOGLE)
+            print("\nYou said: '{}'\n".format(recognized_audio))
+        except Exception:
+            continue
+
+        # last command
+        if last_command == recognized_audio:
+            prompt("cannot do that")
+            continue
+
+        # start timer
+        temp = start_timer(recognized_audio)
+        if isinstance(temp, float):
+            start_time = temp
+            prompt("timer started")
+        else:
+            print(temp)
+
+        # stop timer
+        temp2 = stop_timer(recognized_audio)
+        if isinstance(temp2, float):
+            stop_time = temp2
+            total_sec = calc_total_sec(start_time, stop_time)
+
+            # reset to empty again
+            start_time = ''
+            stop_time = ''
+            print("DURATION:", total_sec)
+        else:
+            print(temp)
+
 
         question_iteration(q_iterations, recognized_audio)
         exit_iteration(x_iterations, recognized_audio)
 
-        # start timer
-        start_time = stopwatch.start()
-        speech.say("Timer started")
-        print("\nTimer started")
+        # save last command
+        last_command = recognized_audio

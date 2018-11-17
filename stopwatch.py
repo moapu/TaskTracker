@@ -17,31 +17,32 @@ class StopWatch:
     def stop(self):
         return time.time()
 
-    def min_and_sec(self, total_sec):
+    def min_with_sec(self, total_sec):
         min = total_sec / 60
         sec = total_sec % 60
         return f"{min:.0f} min {sec:.0f} sec"
 
-    def stop_watch(self, command):
-        i = 1
-        while command != 'stop':
-            print(i)
-            time.sleep(1)
-            i = i + 1
-
-        return i
+    # def stop_watch(self, command):
+    #     i = 1
+    #     while command != 'stop':
+    #         print(i)
+    #         time.sleep(1)
+    #         i = i + 1
+    #
+    #     return i
 
 
 if __name__ == '__main__':
     stopwatch = StopWatch()
-    # start = stopwatch.start()
+    start = stopwatch.start()
     #
-    # time.sleep(3)
+    time.sleep(3)
     #
-    # stop = stopwatch.stop()
-    # duration = f"{(stop - start):.0f}"
+    stop = stopwatch.stop()
+    duration = f"{(stop - start):.0f}"
+    print(duration)
     #
     # print(duration)
 
     # print(stopwatch.min_and_sec(65))
-    stopwatch.stop_watch()
+    # stopwatch.stop_watch()
