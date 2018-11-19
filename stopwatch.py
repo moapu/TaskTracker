@@ -12,12 +12,20 @@ import time
 class StopWatch:
 
     def start(self):
+        """ returns the time to start timer """
         return time.time()
 
     def stop(self):
+        """ returns the time to stop timer """
         return time.time()
 
     def min_with_sec(self, total_sec):
+        """
+        returns the time with min and sec.
+        e.g :
+            1 min 23 sec
+        """
+
         min = total_sec / 60
         sec = total_sec % 60
 
@@ -25,19 +33,3 @@ class StopWatch:
             return f"{sec:.0f} sec"
         else:
             return f"{min:.0f} min {sec:.0f} sec"
-
-
-if __name__ == '__main__':
-    stopwatch = StopWatch()
-    start = stopwatch.start()
-    #
-    time.sleep(3)
-    #
-    stop = stopwatch.stop()
-    duration = f"{(stop - start):.0f}"
-    print(duration)
-    #
-    # print(duration)
-
-    # print(stopwatch.min_and_sec(65))
-    # stopwatch.stop_watch()

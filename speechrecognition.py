@@ -8,9 +8,11 @@
 # =============================
 
 from enum import Enum
-from saveToMongo import MongoDB
-import speech_recognition as sr
+
 import pyttsx3
+import speech_recognition as sr
+
+from saveToMongo import MongoDB
 
 
 class API(Enum):
@@ -55,15 +57,14 @@ class SpeechApp:
         elif api == API.SPHINX:
             return self.r.recognize_sphinx(audio)
 
-    def save_to_mongo(self):
-        pass
-
     def say(self, text):
+        """ Text to Speech """
+
         engine = pyttsx3.init()
         voices = engine.getProperty('voices')
         engine.setProperty('voice', voices[0].id)
         rate = engine.getProperty('rate')
-        engine.setProperty('rate', rate-60)
+        engine.setProperty('rate', rate - 60)
         engine.say(text)
         engine.runAndWait()
 
@@ -94,7 +95,6 @@ class SpeechApp:
 
 
 if __name__ == "__main__":
-
     mongodb = MongoDB()
     s = SpeechApp()
     s.main()

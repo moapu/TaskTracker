@@ -12,9 +12,12 @@ from saveToMongo import MongoDB
 from speechrecognition import SpeechApp, API
 from stopwatch import StopWatch
 
+
 def exit_iteration(iteration, recognized_audio):
-    """ iterations for exiting program. program closes
-    if the words in 'x_iterations' are recognized """
+    """
+    iterations for exiting program. program closes
+    if the words in 'x_iterations' are recognized
+    """
 
     for i in iteration:
         if i in recognized_audio:
@@ -22,9 +25,11 @@ def exit_iteration(iteration, recognized_audio):
 
 
 def question_iteration(iteration, recognized_audio):
-    """ iterations for retrieving timer. program retrieves
+    """
+    iterations for retrieving timer. program retrieves
     timer for mongodb if the words in 'q_iterations' are
-    recognized """
+    recognized
+    """
 
     for i in q_iterations:
         if i in recognized_audio:
@@ -33,28 +38,47 @@ def question_iteration(iteration, recognized_audio):
 
 
 def start_timer(recognized_audio):
-    """ starts the timer """
+    """
+    returns the current time if audio is equal to the following:
+        - start a timer
+        - start time
+    """
     if "start a timer" in recognized_audio or "start timer" in recognized_audio:
         return stopwatch.start()
 
 
 def stop_timer(recognized_audio):
-    """  stops the timer """
+    """
+    returns the current time if audio is equal to the following:
+        - stop time
+    """
     if "stop timer" in recognized_audio:
         return stopwatch.stop()
 
 
 def calc_total_sec(start, stop):
-    """ calculate the sec for chore """
+    """ returns the total sec in Integer form """
     str_val = "{:.0f}".format((stop - start))
     return int(str_val)
 
 
 def prompt(title):
+    """
+    shows whats happening from the programmers POV.
+    e.g:
+        *** LISTENING ***
+    """
     print("\t*** {} ***".format(title).upper())
 
 
 def title(name):
+    """
+    displays the app name on the top.
+    e.g:
+        +------------+
+        | SPEECH APP |
+        +------------+
+    """
     print(f"\t+{(len(name)+2) * '-'}+")
     print(f"\t| {name} |")
     print(f"\t+{(len(name)+2) * '-'}+\n")
@@ -62,6 +86,13 @@ def title(name):
 
 
 def print_duration():
+    """
+    prints the total time of the chore in nice format.
+    e.g:
+         ================
+         DURATION: 15 sec
+         ================
+    """
     prompt = "DURATION"
     t = total_time
     length = len(prompt) + len(t) + 2
@@ -72,7 +103,6 @@ def print_duration():
 
 
 if __name__ == '__main__':
-    """ MAIN FUNC """
 
     # === TITLE ===
     title("SPEECH APP")
