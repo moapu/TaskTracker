@@ -43,8 +43,20 @@ def start_timer(recognized_audio):
         - start a timer
         - start time
     """
+
     if "start a timer" in recognized_audio or "start timer" in recognized_audio:
         return stopwatch.start()
+
+
+def return_timer_name(recognized_audio):
+    import re
+    timer_name = re.findall(r'for (\w+)', recognized_audio)
+
+    if not timer_name:
+        prompt("need a name")
+        return None
+    else:
+        return timer_name[0]
 
 
 def stop_timer(recognized_audio):
@@ -119,7 +131,8 @@ if __name__ == '__main__':
     # === TIMER ===
     start_time = ''
     stop_time = ''
-    total_sec = ''
+    total_time = ''
+    timer_name = ''
 
     # === LAST COMMAND ===
     last_command = ''
@@ -142,6 +155,15 @@ if __name__ == '__main__':
         # save last command
         last_command = recognized_audio
 
+        # check if the name was given
+        if timer_name == '':
+            temp = return_timer_name(recognized_audio)
+
+            if temp is None:
+                continue
+            else:
+                timer_name = temp
+
         # start timer
         temp = start_timer(recognized_audio)
         if isinstance(temp, float):
@@ -156,10 +178,17 @@ if __name__ == '__main__':
             total_sec = calc_total_sec(start_time, stop_time)
             total_time = stopwatch.min_with_sec(total_sec)
 
+            # print duration
+            print_duration()
+
+            # save the time
+            mongodb.save(timer_name, total_time)
+            prompt("timer saved")
+
             # reset to empty again
             start_time = ''
             stop_time = ''
-            print_duration()
+            total_time = ''
             continue
 
         # question_iteration(q_iterations, recognized_audio)

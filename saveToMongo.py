@@ -23,6 +23,12 @@ class MongoDB:
         return time.strftime("%Y-%m-%d %I:%M:%S %p")
 
     def save(self, timer_name, duration):
+        """
+        save to mongo with following data:
+            - timer name
+            - current time
+            - timer duration
+        """
         entry = {'timestamp': self.current_time(), 'timer_name': timer_name, 'duration': duration}
         self.__collection.insert_one(entry)
 
@@ -39,9 +45,6 @@ class MongoDB:
 if __name__ == '__main__':
     mongodb = MongoDB()
     print(mongodb.current_time())
-
-    # save to mongo
-    mongodb.save("wash clothing", 5)
 
     # get all the entry in the collection
     mongodb.get_all()

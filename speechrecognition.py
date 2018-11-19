@@ -71,22 +71,15 @@ class SpeechApp:
     def main(self):
         try:
 
-            self.say("Hello World")
+            # self.say("Hello World")
             # mic input
             audio = self.mic_input()
             recognized_audio = self.recognizer(audio, API.GOOGLE)
             print("\t", recognized_audio)
 
-            # from file input
-            # audio = self.transcribe_from_file('harvard.wav')
-            # recognized_audio = self.recognizer(audio, API.GOOGLE)
-            # print("\t", recognized_audio)
-
-            # save audio to file
-            # self.save_audio_to_file(audio)
-
-            # name the timer
-            self.say("what do you want to name the this timer? ")
+            import re
+            result = re.findall(r'for (\w+)', recognized_audio)
+            print(result)
 
         except sr.UnknownValueError:
             print("Could not understand audio")
