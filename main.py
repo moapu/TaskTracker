@@ -189,6 +189,7 @@ if __name__ == '__main__':
             start_time = ''
             stop_time = ''
             total_time = ''
+            timer_name = ''
             continue
 
         # question_iteration(q_iterations, recognized_audio)
