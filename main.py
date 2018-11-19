@@ -49,6 +49,12 @@ def start_timer(recognized_audio):
 
 
 def return_timer_name(recognized_audio):
+    """
+    uses regex to validate the timer name.
+    if no name, it prompts
+    else, returns the name.
+    """
+
     import re
     timer_name = re.findall(r'for (\w+)', recognized_audio)
 
@@ -158,7 +164,6 @@ if __name__ == '__main__':
         # check if the name was given
         if timer_name == '':
             temp = return_timer_name(recognized_audio)
-
             if temp is None:
                 continue
             else:
