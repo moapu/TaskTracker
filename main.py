@@ -76,8 +76,7 @@ def stop_timer(recognized_audio):
 
 def calc_total_sec(start, stop):
     """ returns the total sec in Integer form """
-    str_val = "{:.0f}".format((stop - start))
-    return int(str_val)
+    return start - stop
 
 
 def prompt(title):
@@ -153,6 +152,9 @@ if __name__ == '__main__':
         except Exception:
             continue
 
+        # question_iteration(q_iterations, recognized_audio)
+        exit_iteration(x_iterations, recognized_audio)
+
         # last command
         if last_command == recognized_audio:
             prompt("cannot do that")
@@ -161,27 +163,12 @@ if __name__ == '__main__':
         # save last command
         last_command = recognized_audio
 
-        # check if the name was given
-        if timer_name == '':
-            temp = return_timer_name(recognized_audio)
-            if temp is None:
-                continue
-            else:
-                timer_name = temp
-
-        # start timer
-        temp = start_timer(recognized_audio)
-        if isinstance(temp, float):
-            start_time = temp
-            prompt("timer started")
-            continue
-
         # stop timer
         temp = stop_timer(recognized_audio)
         if isinstance(temp, float):
             stop_time = temp
             total_sec = calc_total_sec(start_time, stop_time)
-            total_time = stopwatch.min_with_sec(total_sec)
+            total_time = stopwatch.min_with_sec(int(total_sec))
 
             # print duration
             print_duration()
@@ -197,5 +184,17 @@ if __name__ == '__main__':
             timer_name = ''
             continue
 
-        # question_iteration(q_iterations, recognized_audio)
-        exit_iteration(x_iterations, recognized_audio)
+        # check if the name was given
+        if timer_name == '':
+            temp = return_timer_name(recognized_audio)
+            if temp is None:
+                continue
+            else:
+                timer_name = temp
+
+        # start timer
+        temp = start_timer(recognized_audio)
+        if isinstance(temp, float):
+            start_time = temp
+            prompt("timer started")
+            continue
