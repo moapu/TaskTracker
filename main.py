@@ -12,7 +12,6 @@ from saveToMongo import MongoDB
 from speechrecognition import SpeechApp, API
 from stopwatch import StopWatch
 
-
 def exit_iteration(iteration, recognized_audio):
     """ iterations for exiting program. program closes
     if the words in 'x_iterations' are recognized """
@@ -36,35 +35,47 @@ def question_iteration(iteration, recognized_audio):
 def start_timer(recognized_audio):
     """ starts the timer """
     if "start a timer" in recognized_audio or "start timer" in recognized_audio:
-        if start_time != '':
-            return "TIMER ALREADY IN PROGRESS"
-        else:
-            return stopwatch.start()
-    else:
-        return ''
+        return stopwatch.start()
 
 
 def stop_timer(recognized_audio):
     """  stops the timer """
-
     if "stop timer" in recognized_audio:
         return stopwatch.stop()
-    else:
-        return ''
 
 
 def calc_total_sec(start, stop):
     """ calculate the sec for chore """
-
-    return "{:.0f}".format((stop - start))
+    str_val = "{:.0f}".format((stop - start))
+    return int(str_val)
 
 
 def prompt(title):
     print("\t*** {} ***".format(title).upper())
 
 
+def title(name):
+    print(f"\t+{(len(name)+2) * '-'}+")
+    print(f"\t| {name} |")
+    print(f"\t+{(len(name)+2) * '-'}+\n")
+    prompt("wait for voice activation")
+
+
+def print_duration():
+    prompt = "DURATION"
+    t = total_time
+    length = len(prompt) + len(t) + 2
+    print("\t", length * '=')
+    print(f"\t {prompt}: {t}")
+    print("\t", length * '=')
+    print()
+
+
 if __name__ == '__main__':
     """ MAIN FUNC """
+
+    # === TITLE ===
+    title("SPEECH APP")
 
     # === INSTANTIATION ===
     speech = SpeechApp()
@@ -98,30 +109,28 @@ if __name__ == '__main__':
             prompt("cannot do that")
             continue
 
+        # save last command
+        last_command = recognized_audio
+
         # start timer
         temp = start_timer(recognized_audio)
         if isinstance(temp, float):
             start_time = temp
             prompt("timer started")
-        else:
-            print(temp)
+            continue
 
         # stop timer
-        temp2 = stop_timer(recognized_audio)
-        if isinstance(temp2, float):
-            stop_time = temp2
+        temp = stop_timer(recognized_audio)
+        if isinstance(temp, float):
+            stop_time = temp
             total_sec = calc_total_sec(start_time, stop_time)
+            total_time = stopwatch.min_with_sec(total_sec)
 
             # reset to empty again
             start_time = ''
             stop_time = ''
-            print("DURATION:", total_sec)
-        else:
-            print(temp)
+            print_duration()
+            continue
 
-
-        question_iteration(q_iterations, recognized_audio)
+        # question_iteration(q_iterations, recognized_audio)
         exit_iteration(x_iterations, recognized_audio)
-
-        # save last command
-        last_command = recognized_audio

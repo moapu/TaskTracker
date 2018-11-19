@@ -20,16 +20,11 @@ class StopWatch:
     def min_with_sec(self, total_sec):
         min = total_sec / 60
         sec = total_sec % 60
-        return f"{min:.0f} min {sec:.0f} sec"
 
-    # def stop_watch(self, command):
-    #     i = 1
-    #     while command != 'stop':
-    #         print(i)
-    #         time.sleep(1)
-    #         i = i + 1
-    #
-    #     return i
+        if int(min) == 0:
+            return f"{sec:.0f} sec"
+        else:
+            return f"{min:.0f} min {sec:.0f} sec"
 
 
 if __name__ == '__main__':
