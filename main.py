@@ -7,10 +7,10 @@
 # Rev: 1
 # =============================
 import sys
+import time
 
 from saveToMongo import MongoDB
 from speechrecognition import SpeechApp, API
-from stopwatch import StopWatch
 
 
 def exit_iteration(iteration, recognized_audio):
@@ -73,12 +73,28 @@ def stop_timer(recognized_audio):
         - stop time
     """
     if "stop timer" in recognized_audio:
-        return stopwatch.stop()
+        return time.time()
 
 
 def calc_total_sec(start, stop):
     """ returns the total sec in Integer form """
     return stop - start
+
+
+def min_with_sec(total_sec):
+    """
+    returns the time with min and sec.
+    e.g :
+        1 min 23 sec
+    """
+
+    min = total_sec / 60
+    sec = total_sec % 60
+
+    if int(min) == 0:
+        return f"{sec:.0f} sec"
+    else:
+        return f"{min:.0f} min {sec:.0f} sec"
 
 
 def prompt(title):
@@ -129,7 +145,6 @@ if __name__ == '__main__':
     # === INSTANTIATION ===
     speech = SpeechApp()
     mongodb = MongoDB()
-    stopwatch = StopWatch()
 
     # === ITERATIONS ===
     x_iterations = ["close", "exit", "turn off"]
@@ -169,7 +184,7 @@ if __name__ == '__main__':
         if isinstance(temp, float):
             stop_time = temp
             total_sec = calc_total_sec(start_time, stop_time)
-            total_time = stopwatch.min_with_sec(int(total_sec))
+            total_time = min_with_sec(int(total_sec))
 
             # print duration
             print_duration()
@@ -192,6 +207,6 @@ if __name__ == '__main__':
                 continue
             else:
                 timer_name = temp
-                start_time = stopwatch.start()
+                start_time = time.time()
                 prompt("timer started")
                 continue
