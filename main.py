@@ -24,21 +24,21 @@ def exit_iteration(iteration, recognized_audio):
             sys.exit()
 
 
-def query_time(iteration, recognized_audio):
+def query_timer(recognized_audio):
     """
     iterations for retrieving timer. program retrieves
     timer for mongodb if the words in 'q_iterations' are
     recognized
     """
 
-    import re
-    timer_name = re.findall(r'for (\w+)', recognized_audio)
+    if ("what's" in recognized_audio or "what is" in recognized_audio) and "for" in recognized_audio:
+        import re
+        timer_name = re.findall(r'for (\w+)', recognized_audio)
 
-    for i in q_iterations:
-        if i in recognized_audio:
-            break
-
-    return mongodb.find_one(timer_name[0])
+        if not timer_name:
+            prompt("no name")
+        else:
+            return mongodb.find_one(timer_name[0])
 
 
 def start_timer(recognized_audio):
@@ -49,7 +49,14 @@ def start_timer(recognized_audio):
     """
 
     if "start a timer" in recognized_audio or "start timer" in recognized_audio:
-        return stopwatch.start()
+
+        import re
+        timer_name = re.findall(r'for (\w+)', recognized_audio)
+
+        if not timer_name:
+            prompt("need a name")
+        else:
+            return timer_name[0]
 
 
 def return_timer_name(recognized_audio):
@@ -58,15 +65,6 @@ def return_timer_name(recognized_audio):
     if no name, it prompts
     else, returns the name.
     """
-
-    import re
-    timer_name = re.findall(r'for (\w+)', recognized_audio)
-
-    if not timer_name:
-        prompt("need a name")
-        return None
-    else:
-        return timer_name[0]
 
 
 def stop_timer(recognized_audio):
@@ -134,7 +132,6 @@ if __name__ == '__main__':
     stopwatch = StopWatch()
 
     # === ITERATIONS ===
-    q_iterations = ["what", "what's", "what is"]
     x_iterations = ["close", "exit", "turn off"]
 
     # === TIMER ===
@@ -157,7 +154,7 @@ if __name__ == '__main__':
             continue
 
         exit_iteration(x_iterations, recognized_audio)
-        query_time(q_iterations, recognized_audio)
+        query_timer(recognized_audio)
 
         # last command
         if last_command == recognized_audio:
@@ -190,15 +187,11 @@ if __name__ == '__main__':
 
         # check if the name was given
         if timer_name == '':
-            temp = return_timer_name(recognized_audio)
-            if temp is None:
+            temp = start_timer(recognized_audio)
+            if not temp:
                 continue
             else:
                 timer_name = temp
-
-        # start timer
-        temp = start_timer(recognized_audio)
-        if isinstance(temp, float):
-            start_time = temp
-            prompt("timer started")
-            continue
+                start_time = stopwatch.start()
+                prompt("timer started")
+                continue
