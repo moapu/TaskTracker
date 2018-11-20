@@ -18,8 +18,7 @@ class MongoDB:
         self.__db = self.__client.db_group2
         self.__collection = self.__db.timer
 
-    @staticmethod
-    def current_time():
+    def current_time(self):
         return time.strftime("%Y-%m-%d %I:%M:%S %p")
 
     def save(self, timer_name, duration):
@@ -29,15 +28,20 @@ class MongoDB:
             - current time
             - timer duration
         """
+
         entry = {'timestamp': self.current_time(), 'timer_name': timer_name, 'duration': duration}
         self.__collection.insert_one(entry)
 
-    def get_all(self):
+    def find_all(self):
+        """ returns all the entry from the mongodb """
+
         cursor = self.__collection.find({})
         for document in cursor:
             print(f"{document['timestamp']} | {document['timer_name']} => {document['duration']}")
 
     def find_one(self, name):
+        """ returns one entry from the mongodb """
+
         cursor = self.__collection.find({'timer_name': name})
         for document in cursor:
             print(f"{document['timestamp']} | {document['timer_name']} => {document['duration']}")
@@ -52,7 +56,7 @@ if __name__ == '__main__':
     print(mongodb.current_time())
 
     # get all the entry in the collection
-    # mongodb.get_all()
+    # mongodb.find_all()
 
     mongodb.find_one('dishwasher')
     # drop the collection

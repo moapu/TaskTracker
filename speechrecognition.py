@@ -12,8 +12,6 @@ from enum import Enum
 import pyttsx3
 import speech_recognition as sr
 
-from saveToMongo import MongoDB
-
 
 class API(Enum):
     """ equivalent to Java 'Enum' """
@@ -68,26 +66,24 @@ class SpeechApp:
         engine.say(text)
         engine.runAndWait()
 
-    def main(self):
-        try:
-
-            # self.say("Hello World")
-            # mic input
-            audio = self.mic_input()
-            recognized_audio = self.recognizer(audio, API.GOOGLE)
-            print("\t", recognized_audio)
-
-            import re
-            result = re.findall(r'for (\w+)', recognized_audio)
-            print(result)
-
-        except sr.UnknownValueError:
-            print("Could not understand audio")
-        except sr.RequestError as e:
-            print("Could not request results; {0}".format(e))
-
 
 if __name__ == "__main__":
-    mongodb = MongoDB()
-    s = SpeechApp()
-    s.main()
+
+    speech = SpeechApp()
+    try:
+
+        # self.say("Hello World")
+        # mic input
+        audio = speech.mic_input()
+        recognized_audio = speech.recognizer(audio, API.GOOGLE)
+        print("\t", recognized_audio)
+
+        import re
+
+        result = re.findall(r'for (\w+)', recognized_audio)
+        print(result)
+
+    except sr.UnknownValueError:
+        print("Could not understand audio")
+    except sr.RequestError as e:
+        print("Could not request results; {0}".format(e))

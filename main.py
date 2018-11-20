@@ -38,7 +38,7 @@ def query_timer(recognized_audio):
         if not timer_name:
             prompt("no name")
         else:
-            return mongodb.find_one(timer_name[0])
+            return mongodb.find_one(timer_name[0]), "\n"
 
 
 def start_timer(recognized_audio):
@@ -180,25 +180,26 @@ if __name__ == '__main__':
         last_command = recognized_audio
 
         # stop timer
-        temp = stop_timer(recognized_audio)
-        if isinstance(temp, float):
-            stop_time = temp
-            total_sec = calc_total_sec(start_time, stop_time)
-            total_time = min_with_sec(int(total_sec))
+        if start_time != '':
+            temp = stop_timer(recognized_audio)
+            if isinstance(temp, float):
+                stop_time = temp
+                total_sec = calc_total_sec(start_time, stop_time)
+                total_time = min_with_sec(int(total_sec))
 
-            # print duration
-            print_duration()
+                # print duration
+                print_duration()
 
-            # save the time
-            mongodb.save(timer_name, total_time)
-            prompt("timer saved")
+                # save the time
+                mongodb.save(timer_name, total_time)
+                prompt("timer saved")
 
-            # reset to empty again
-            start_time = ''
-            stop_time = ''
-            total_time = ''
-            timer_name = ''
-            continue
+                # reset to empty again
+                start_time = ''
+                stop_time = ''
+                total_time = ''
+                timer_name = ''
+                continue
 
         # check if the name was given
         if timer_name == '':
@@ -209,4 +210,3 @@ if __name__ == '__main__':
                 timer_name = temp
                 start_time = time.time()
                 prompt("timer started")
-                continue
