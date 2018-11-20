@@ -31,10 +31,14 @@ def question_iteration(iteration, recognized_audio):
     recognized
     """
 
+    import re
+    timer_name = re.findall(r'for (\w+)', recognized_audio)
+
     for i in q_iterations:
         if i in recognized_audio:
-            print("true")
             break
+
+    return mongodb.find_one(timer_name[0])
 
 
 def start_timer(recognized_audio):
@@ -76,7 +80,7 @@ def stop_timer(recognized_audio):
 
 def calc_total_sec(start, stop):
     """ returns the total sec in Integer form """
-    return start - stop
+    return stop - start
 
 
 def prompt(title):
@@ -152,8 +156,8 @@ if __name__ == '__main__':
         except Exception:
             continue
 
-        # question_iteration(q_iterations, recognized_audio)
         exit_iteration(x_iterations, recognized_audio)
+        question_iteration(q_iterations, recognized_audio)
 
         # last command
         if last_command == recognized_audio:

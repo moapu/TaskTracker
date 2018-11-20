@@ -37,6 +37,11 @@ class MongoDB:
         for document in cursor:
             print(f"{document['timestamp']} | {document['timer_name']} => {document['duration']}")
 
+    def find_one(self, name):
+        cursor = self.__collection.find({'timer_name': name})
+        for document in cursor:
+            print(f"{document['timestamp']} | {document['timer_name']} => {document['duration']}")
+
     def drop_collection(self):
         """ deletes the entire collection """
         self.__collection.drop()
@@ -47,7 +52,8 @@ if __name__ == '__main__':
     print(mongodb.current_time())
 
     # get all the entry in the collection
-    mongodb.get_all()
+    # mongodb.get_all()
 
+    mongodb.find_one('dishwasher')
     # drop the collection
     # mongodb.drop_collection()
