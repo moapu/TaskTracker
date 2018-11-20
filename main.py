@@ -24,7 +24,7 @@ def exit_iteration(iteration, recognized_audio):
             sys.exit()
 
 
-def question_iteration(iteration, recognized_audio):
+def query_time(iteration, recognized_audio):
     """
     iterations for retrieving timer. program retrieves
     timer for mongodb if the words in 'q_iterations' are
@@ -157,7 +157,7 @@ if __name__ == '__main__':
             continue
 
         exit_iteration(x_iterations, recognized_audio)
-        question_iteration(q_iterations, recognized_audio)
+        query_time(q_iterations, recognized_audio)
 
         # last command
         if last_command == recognized_audio:
