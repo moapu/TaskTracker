@@ -38,7 +38,7 @@ def query_timer(recognized_audio):
         if not timer_name:
             prompt("no name")
         else:
-            return mongodb.find_one(timer_name[0]), "\n"
+            return mongodb.find_one(timer_name[0])
 
 
 def start_timer(recognized_audio):
