@@ -7,3 +7,5 @@ def install(package):
 if __name__ == '__main__':
     install('pyttsx3')
     install('pypiwin32')
+    install("pymongo")
+    install("speechrecognition")
