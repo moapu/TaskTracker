@@ -38,3 +38,39 @@ Speechrecognition.py<br/>
            
 User input will be taken into accountability throughout the listening function of these methods. 
 
+Setup.py<br/>
+------------
+Install all the nessecary requirement for the process.
+
+def install(package):
+
+    subprocess.call([sys.executable, "-m", "pip", "install", package])
+
+saveToMongo.py
+--------------
+The function of saveToMongo include the following: <br/>
+1. Save task with a allocated time<br/>
+2. Return all entry from the mongo database <br/>
+3. return one entry from the mongo database <br/>
+4. delete an whole entry <br/>
+
+main.py
+------
+
+The last file will allow the entire program to run. <br/>
+
+        # === TITLE ===
+         +------------+
+         | SPEECH APP |
+         +------------+
+        
+        *** LISTENING ***
+         
+        ================
+        DURATION: 15 sec
+        ================
+  
+  
+
+
+
