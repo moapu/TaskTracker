@@ -7,42 +7,82 @@
 # Rev: N/A
 
 import unittest
-import datetime
-from saveToMongo import MongoDB
+import saveToMongo
+import time
+from saveToMongo import MongoDB 
 
+class UnitTestsaveToMongo(unittest.TestCase):
 
-class UnitTestDB(unittest.TestCase):
-    """Unit Testing class saveToMongo"""
+    def test_init(self):
+       '''
+       This will initialize MongoDB class and verify 
+       that it is not None
+       '''
+       
+       #Execute
+       mongo_db = saveToMongo.MongoDB()
 
-    def test_Current_Time(self):
-        """ Test current time method"""
-        my_time = datetime.datetime("%Y-%m-%d %I:%M:%S %p")
-        response_time = time.strftime("%Y-%m-%d %I:%M:%S %p")
-        self.assertEqual(response_time, my_time)
+       #Verify mongo_db is not None
+       self.assertIsNotNone(mongo_db)
 
-    #To be continue
-    def test_Save(self):
-        """ Testing The following Save
-            - timer name
-            - current time
-            - timer duration
-        """
-        self.assertTrue(True)
-    #To Be continue
-    def find_all(self):
-        """ Testing finding entry from MongoDB include timestamp
-            for document in cursor: print(f"{document['timestamp']
-            }|{document['timer_name']} => {document['duration']}")
-        """
-        self.assertTrue(True)
-    #To Be continue
-    def find_one(self):
-        """Testing one entry for Mongo"""
-        self.assertTrue(True)
+    def test_current_time(self):
+       '''
+       This tests if the current time is the same
+       string representation
+       '''
+       #Inputs and expected output
+       expected_output = time.strftime('%Y-%m-%d %I:%M:%S %p')
+       #Execute function
+       actual_output = saveToMongo.MongoDB().current_time()
+       #Check if input and output is same
+       self.assertEqual(actual_output, expected_output)
 
-    def test_Drop(self):
-        """Testing to see if the entire is drop, if True then its 
-	   drop
-	"""
-        self.assertTrue(MongoDB.drop_collection, True)
+       
+    def test_save(self):
+       '''
+       This tests if the duration is saved against the timer name.
+       '''
+       timer_name = 'timer_name'
+       duration = 5
 
+       class MockCollection():
+          def __init__(self):
+              self.data = []
+
+          def insert_one(self,value):
+               self.data.append(value)
+
+       #Execute function
+       mongo_db = saveToMongo.MongoDB()
+       mongo_db._MongoDB__collection = MockCollection()
+       mongo_db.save(timer_name, duration)
+
+       #Assert collection is not empty
+       self.assertGreater(len(mongo_db._MongoDB__collection.data),0)
+
+    def test_drop_collection(self):
+       '''
+       This tests if the collection is empty. It defins a 
+       MockCollection that starts.with a filled list. Calling
+       drop() on it will empty the collection. Again, here we are 
+       not testing mongodb. We just need to verify if the drop()
+       method is called on the collection
+       '''
+       #Expected function
+       expected_collection_count = 0
+
+       class MockCollection():
+          def __init__(self):
+              self.data = [1, 2, 3]
+
+          def drop(self):
+           	   self.data.clear()
+
+       #Execute function
+       mongo_db = saveToMongo.MongoDB()
+       mongo_db._MongoDB__collection = MockCollection()
+       mongo_db.drop_collection()
+
+       #Assert collection is not empty
+       
+self.assertEqual(len(mongo_db._MongoDB__collection.data),expected_collection_count)
