@@ -6,8 +6,6 @@
 # Last Date Changed: 11/22/2018
 # Rev: N/A
 
-#test for SpeechRecognition ~STATUS~#
-#---------------------------~in Progress-----------#
 
 import unittest
 import speech_recognition as sr
@@ -15,6 +13,7 @@ import speechrecognition
 import os.path
 
 class UnitTestSpeechRecognition(unittest.TestCase):
+	"""This is a Unit Testing for the class speechrecognition"""
 
     def test_transcribe_and_recognizer(self):
         """
