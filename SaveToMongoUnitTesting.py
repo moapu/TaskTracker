@@ -85,3 +85,49 @@ class UnitTestsaveToMongo(unittest.TestCase):
 
        #Assert collection is not empty
        self.assertEqual(len(mongo_db._MongoDB__collection.data),expected_collection_count)
+
+    def test_find_one(self):
+       '''
+       This tests the find one function. It defines a mock collection that 
+       creates a document and returns it.
+       '''
+       #Expected inputs and output
+       input_timer_name = "dinner timer"
+       expected_timestamp = 'some time'
+
+       class MockCollection():
+          def __init__(self):
+              pass
+
+          def find(self, key):
+               if key['timer_name'] == input_timer_name:
+                  return [{'timestamp':expected_timestamp, 'timer_name':input_timer_name,'duration':'63'}]
+               else:
+                  return None
+       #Execute function
+       mongo_db = saveToMongo.MongoDB()
+       mongo_db._MongoDB__collection = MockCollection()
+       mongo_db.find_one(input_timer_name)
+
+    def test_find_all(self):
+       '''
+       This tests the find all function by defining a mock collection that 
+       returns all the documents if the input dict is null
+       '''
+       #Expected inputs and output
+       input_timer_name = "dinner timer"
+       expected_timestamp = 'some time'
+
+       class MockCollection():
+          def __init__(self):
+              pass
+
+          def find(self, key):
+               if len(key) == 0:
+                  return [{'timestamp':expected_timestamp, 'timer_name':input_timer_name,'duration':'63'}]
+               else:
+                  return None
+       #Execute function
+       mongo_db = saveToMongo.MongoDB()
+       mongo_db._MongoDB__collection = MockCollection()
+       mongo_db.find_all()
