@@ -1,7 +1,7 @@
 # Project:Speech Recognition Time App
 # Purpose Details: Unit Test for main
 #
-# Author Reevja, Jon
+# Author Raveeja, Jon
 # Date Developed: 11/28/2018
 # Last Date Changed: 11/28/2018
 # Rev: n/a
@@ -178,6 +178,42 @@ class UnitTestMain(unittest.TestCase):
        actual_output = main.min_with_sec(total_sec)
        #Check if input and output 
        self.assertEqual(actual_output, expected_output)
+
+    def test_prompt(self):
+      """
+      Tests the prompt method. It doesn't check for expected outputs
+      because the function doesn't return anything. It only checks that
+      the method runs without errors.
+      """
+      #Inputs
+      title = 'Hello'
+      #Excute function
+      main.prompt(title)
+      #No output to check here
+
+    def test_title(self):
+      """
+      Tests the title method. It doesn't check for expected outputs
+      because the function doesn't anything.It only checks that 
+      the method runs without errors 
+      """
+      #Inputs
+      name = 'Speech recognition app'
+      #Excute function
+      main.title(name)
+      #No output to check here
+
+    def test_duration(self):
+      """
+      Tests the duration method.It doesn't check for expected outputs 
+      because the funciton doesn't return anything. It only checks that 
+      the method runs without errors. 
+      """
+      main.total_time = ''
+      #Execute function
+      main.print_duration()
+
+
 
 
 
