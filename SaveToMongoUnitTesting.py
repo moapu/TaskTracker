@@ -84,5 +84,4 @@ class UnitTestsaveToMongo(unittest.TestCase):
        mongo_db.drop_collection()
 
        #Assert collection is not empty
-       
-self.assertEqual(len(mongo_db._MongoDB__collection.data),expected_collection_count)
+       self.assertEqual(len(mongo_db._MongoDB__collection.data),expected_collection_count)
